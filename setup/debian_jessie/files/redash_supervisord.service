@@ -1,0 +1,13 @@
+[Unit]
+Description=Redash Process Supervisor
+After=network.target
+Requires=redis-server.service
+
+[Service]
+User=redash
+ExecStart=/usr/local/bin/supervisord --configuration /opt/redash/supervisord/supervisord.conf
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+

@@ -9,6 +9,7 @@ celerybeat-schedule*
 \#*#
 *~
 _build
+*.swp
 
 # Vagrant related
 .vagrant
