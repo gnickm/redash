@@ -51,27 +51,6 @@ adduser --system --no-create-home --disabled-login --gecos "" redash
 # PostgreSQL
 apt-get install -y postgresql
 
-add_service() {
-    service_name=$1
-    service_command="/etc/init.d/$service_name"
-
-    echo "Adding service: $service_name (/etc/init.d/$service_name)."
-    chmod +x "$service_command"
-
-    if command -v chkconfig >/dev/null 2>&1; then
-        # we're chkconfig, so lets add to chkconfig and put in runlevel 345
-        chkconfig --add "$service_name" && echo "Successfully added to chkconfig!"
-        chkconfig --level 345 "$service_name" on && echo "Successfully added to runlevels 345!"
-    elif command -v update-rc.d >/dev/null 2>&1; then
-        #if we're not a chkconfig box assume we're able to use update-rc.d
-        update-rc.d "$service_name" defaults && echo "Success!"
-    else
-        echo "No supported init tool found."
-    fi
-
-    $service_command start
-}
-
 # Redis
 # redis-server 2.8.17 ships with jessie, so nothing fancy here
 apt-get install -y redis-server
@@ -146,8 +125,9 @@ pip install supervisor==3.1.2 # TODO: move to requirements.txt
 # Get supervisord startup script
 sudo -u redash wget -O /opt/redash/supervisord/supervisord.conf $FILES_BASE_URL"supervisord.conf"
 
-wget -O /etc/init.d/redash_supervisord $FILES_BASE_URL"redash_supervisord_init"
-add_service "redash_supervisord"
+wget -O /etc/systemd/system/redash_supervisord.service $FILES_BASE_URL"redash_supervisord_init.service"
+systemctl enable redash_supervisord.service
+systemctl start redash_supervisord.service
 
 # Nginx setup
 rm /etc/nginx/sites-enabled/default
