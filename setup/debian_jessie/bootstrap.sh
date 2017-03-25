@@ -40,9 +40,10 @@ apt-get install -y libsasl2-dev
 #Saml dependency
 apt-get install -y xmlsec1
 
-# Upgrade pip 
+# Upgrade pip
+export LC_ALL=C
 pip install --upgrade pip
-pip install -U setuptools==23.1.0
+pip install --upgrade setuptools
 
 # redash user
 # TODO: check user doesn't exist yet?
@@ -125,7 +126,7 @@ pip install supervisor==3.1.2 # TODO: move to requirements.txt
 # Get supervisord startup script
 sudo -u redash wget -O /opt/redash/supervisord/supervisord.conf $FILES_BASE_URL"supervisord.conf"
 
-wget -O /etc/systemd/system/redash_supervisord.service $FILES_BASE_URL"redash_supervisord_init.service"
+wget -O /etc/systemd/system/redash_supervisord.service $FILES_BASE_URL"redash_supervisord.service"
 systemctl enable redash_supervisord.service
 systemctl start redash_supervisord.service
 
