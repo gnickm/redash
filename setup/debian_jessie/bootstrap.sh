@@ -49,7 +49,7 @@ pip install -U setuptools==23.1.0
 adduser --system --no-create-home --disabled-login --gecos "" redash
 
 # PostgreSQL
-apt-get install -y postgresql
+apt-get install -y postgresql libpq-dev
 
 # Redis
 # redis-server 2.8.17 ships with jessie, so nothing fancy here
